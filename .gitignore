@@ -1,0 +1,13 @@
+CVS/
+*.ncb
+*.suo
+*.user
+*.vssscc
+*.vspscc
+*.cache
+bin/
+obj/
+Debug/
+Release/
+obsolete/
+*.pyc
