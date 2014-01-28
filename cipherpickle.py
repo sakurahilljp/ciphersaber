@@ -2,6 +2,7 @@
 
 import sys
 import os
+import base64
 
 try:
     import cPickle as pickle
@@ -9,14 +10,6 @@ except:
     import pickle
 
 import cipherlib
-    
-def dump(obj, key, out_stream = sys.stdout):
-    encrypted = dumps(obj, key)
-    out_stream.write(encrypted)
-    out_stream.flush()
-
-def load(in_stream, key):
-    return loads( in_stream.read(), key)
 
 def dumps(obj, key):
     return cipherlib.encrypt(pickle.dumps(obj), key)
@@ -25,20 +18,18 @@ def loads(encrypted, key):
     return pickle.loads(cipherlib.decrypt(encrypted, key))
 
 def test():
-    obj = [[1,2],3]
+    obj = [[ i for i in range(50)],
+           [ i*i for i in range(50)],
+           [ i*i*i for i in range(50)],
+           [ i*i*i*i for i in range(50)],
+       ]
     key = 'secretkey'
 
-    assert loads(dumps(obj, key), key) == obj
+    encrypted = dumps(obj,key)
 
-    filename = 'rmok.txt'
-    try:
-        with open(filename, 'wb') as out_stream:
-            dump(obj, key, out_stream)
-
-        with open(filename, 'rb') as in_stream:
-            assert load(in_stream, key) == obj
-    finally:
-        os.remove(filename)
+    print obj
+    print encrypted
+    assert loads(encrypted,key) == obj
 
 def main():
     test()
