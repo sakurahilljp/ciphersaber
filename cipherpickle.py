@@ -1,6 +1,5 @@
 #!/bin/env python
 
-import cscrypt
 import sys
 import os
 
@@ -9,6 +8,7 @@ try:
 except:
     import pickle
 
+import cipherlib
     
 def dump(obj, key, out_stream = sys.stdout):
     encrypted = dumps(obj, key)
@@ -19,10 +19,10 @@ def load(in_stream, key):
     return loads( in_stream.read(), key)
 
 def dumps(obj, key):
-    return cscrypt.encrypt(pickle.dumps(obj), key)
+    return cipherlib.encrypt(pickle.dumps(obj), key)
 
 def loads(encrypted, key):
-    return pickle.loads(cscrypt.decrypt(encrypted, key))
+    return pickle.loads(cipherlib.decrypt(encrypted, key))
 
 def test():
     obj = [[1,2],3]
